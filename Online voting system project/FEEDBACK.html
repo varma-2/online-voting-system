@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            padding: 20px;
+        }
+        .feedback-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        h2 {
+            text-align: center;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="feedback-container">
+        <h2>Feedback</h2>
+        <input type="text" id="username" placeholder="Enter your username">
+        <input type="email" id="email" placeholder="Enter your email">
+        <input type="tel" id="mobile" placeholder="Enter your mobile number">
+        <textarea id="feedback" rows="5" placeholder="Please provide your feedback here..."></textarea>
+        <button onclick="submitFeedback()">Submit Feedback</button>
+        <div id="feedback-result" style="margin-top: 20px;"></div>
+    </div>
+
+    <script>
+        function submitFeedback() {
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const mobile = document.getElementById('mobile').value;
+            const feedback = document.getElementById('feedback').value;
+            
+            if (username && email && mobile && feedback) {
+                // Simulate sending feedback to server
+                console.log('Feedback submitted:', { username, email, mobile, feedback });
+                document.getElementById('feedback-result').innerHTML = `<p>Thank you for your feedback, ${username}!</p>`;
+                document.getElementById('username').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('mobile').value = '';
+                document.getElementById('feedback').value = ''; // Clear inputs
+            } else {
+                alert('Please fill out all fields before submitting.');
+            }
+        }
+    </script>
+</body>
+</html>

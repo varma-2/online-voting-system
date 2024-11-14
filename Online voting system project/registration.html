@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #7d59a2, #685671); /* Gradient background */
+            padding: 20px;
+            color: white; /* Change text color to white for better contrast */
+        }
+        .registration-form {
+            background: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+            color: black; /* Change text color to black for readability */
+            text-align: center; /* Centering content within the form */
+        }
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px; /* Space between the logo and the form fields */
+        }
+        .logo-container img {
+            max-width: 150px; /* Adjust the logo width */
+            height: auto; /* Maintain the aspect ratio */
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left; /* Left-align the labels and input fields */
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .toggle-password {
+            cursor: pointer;
+        }
+        .social-signup {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .scan-interface {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            border: 2px dashed #ccc;
+            padding: 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="registration-form">
+        <!-- Logo Section -->
+        <div class="logo-container">
+            <img src="online voting.avif" alt="Logo"> <!-- Ensure your image source path is correct -->
+        </div>
+
+        <h2>Registration</h2>
+        <form>
+            <!-- User Information Fields -->
+            <div class="form-group">
+                <label for="first-name">First Name:</label>
+                <input type="text" id="first-name" name="first-name" required>
+            </div>
+            <div class="form-group">
+                <label for="middle-name">Middle Name:</label>
+                <input type="text" id="middle-name" name="middle-name">
+            </div>
+            <div class="form-group">
+                <label for="last-name">Last Name:</label>
+                <input type="text" id="last-name" name="last-name" required>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob" required>
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+
+            <!-- Username, Password Fields -->
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility('password')">👁</span>
+                <small>Password must be at least 8 characters long, include uppercase and lowercase letters, numbers, and special characters.</small>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
+                <span class="toggle-password" onclick="togglePasswordVisibility('confirm-password')">👁</span>
+            </div>
+
+            <!-- Email and Mobile Verification -->
+            <div class="form-group">
+                <label for="email">Email ID:</label>
+                <input type="email" id="email" name="email" required>
+                <button type="button" onclick="verifyEmail()">Verify</button>
+                <div id="otp-section" style="display:none;">
+                    <label for="otp">Enter OTP:</label>
+                    <input type="text" id="otp" name="otp">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="mobile">Mobile Number:</label>
+                <input type="tel" id="mobile" name="mobile" required>
+                <button type="button" onclick="verifyMobile()">Verify</button>
+                <div id="mobile-otp-section" style="display:none;">
+                    <label for="mobile-otp">Enter OTP:</label>
+                    <input type="text" id="mobile-otp" name="mobile-otp">
+                </div>
+            </div>
+
+            <!-- Document Uploads -->
+            <div class="form-group">
+                <label for="address-proof">Address Proof Document:</label>
+                <input type="file" id="address-proof" name="address-proof" required>
+            </div>
+            <div class="form-group">
+                <label for="DOB">DOB Certificate:</label>
+                <input type="file" id="address-proof" name="address-proof" required>
+            </div>
+            <div class="form-group">
+                <label for="Adhar No.">Aadhar Card Document:</label>
+                <input type="file" id="voter-id" name="voter-id" required>
+            </div>
+            <div class="form-group">
+                <label for="pan-card">PAN Card Document:</label>
+                <input type="file" id="pan-card" name="pan-card" required>
+            </div>
+
+            <!-- Biometric Registration -->
+            <div class="form-group">
+                <button type="button" onclick="showFingerprint()">Register Fingerprint</button>
+                <button type="button" onclick="showFaceScan()">Scan Face</button>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group">
+                <button type="submit">Register</button>
+            </div>
+        </form>
+
+        
+
+        <!-- Fingerprint Registration Interface -->
+        <div class="scan-interface" id="fingerprint-interface">
+            <h3>Fingerprint Registration Interface</h3>
+            <p>Place your finger on the scanner to register your fingerprint.</p>
+            <button onclick="startFingerprintScan()">Start Scanning</button>
+            <div id="fingerprint-result" style="margin-top: 10px;"></div>
+        </div>
+
+        <!-- Face Scan Interface -->
+        <div class="scan-interface" id="face-scan-interface">
+            <h3>Face Scan Interface</h3>
+            <p>Align your face within the frame to scan.</p>
+            <button onclick="startFaceScan()">Start Scanning</button>
+            <div id="face-scan-result" style="margin-top: 10px;"></div>
+        </div>
+
+        <!-- Scan and Register After Scanning -->
+        <div class="scan-interface" id="scan-register-interface" style="display:none;">
+            <h3>Scan and Register</h3>
+            <p>Follow the instructions to complete your registration.</p>
+            <button onclick="completeRegistration()">Complete Registration</button>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        function togglePasswordVisibility(id) {
+            const passwordField = document.getElementById(id);
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+        }
+
+        // OTP Verification Functions
+        function verifyEmail() {
+            document.getElementById('otp-section').style.display = 'block';
+            alert('OTP sent to your email (simulated)');
+        }
+
+        function verifyMobile() {
+            document.getElementById('mobile-otp-section').style.display = 'block';
+            alert('OTP sent to your mobile number (simulated)');
+        }
+
+        // Fingerprint and Face Scanning Simulation
+        function showFingerprint() {
+            document.getElementById('fingerprint-interface').style.display = 'block';
+            document.getElementById('face-scan-interface').style.display = 'none';
+        }
+
+        function showFaceScan() {
+            document.getElementById('face-scan-interface').style.display = 'block';
+            document.getElementById('fingerprint-interface').style.display = 'none';
+        }
+
+        function startFingerprintScan() {
+            const fingerprintResult = document.getElementById('fingerprint-result');
+            fingerprintResult.innerText = "Fingerprint registered successfully!";
+            document.getElementById('scan-register-interface').style.display = 'block';
+        }
+
+        function startFaceScan() {
+            const faceScanResult = document.getElementById('face-scan-result');
+            faceScanResult.innerText = "Face scanned successfully!";
+            document.getElementById('scan-register-interface').style.display = 'block';
+        }
+
+        function completeRegistration() {
+            alert('Registration completed successfully!');
+        }
+
+        
+    </script>
+</body>
+</html>

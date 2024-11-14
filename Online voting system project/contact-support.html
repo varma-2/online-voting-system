@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Support</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            padding: 20px;
+        }
+        .contact-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        h2 {
+            text-align: center;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .contact-info {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .contact-info p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="contact-container">
+        <h2>Contact Support</h2>
+        <input type="text" id="name" placeholder="Your Name" required>
+        <input type="email" id="email" placeholder="Your Email" required>
+        <textarea id="message" rows="5" placeholder="Your Message" required></textarea>
+        <button onclick="contactSupport()">Submit</button>
+        <div id="contact-result" style="margin-top: 20px;"></div>
+
+        <div class="contact-info">
+            <h3>Contact Information</h3>
+            <p>If you need immediate assistance, please reach out to our official support channels:</p>
+            <p><strong>Call Center:</strong> 1-800-123-4567</p>
+            <p><strong>Email:</strong> support@onlinevoting.com</p>
+            <p><strong>Office Hours:</strong> Monday - Friday, 9 AM - 5 PM (EST)</p>
+        </div>
+    </div>
+
+    <script>
+        function contactSupport() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            if (!name || !email || !message) {
+                alert('Please enter something in all fields before submitting.');
+                return;
+            }
+
+            console.log('Contact Support submitted:', { name, email, message });
+            document.getElementById('contact-result').innerHTML = `<p>Thank you for contacting us, ${name}! We will get back to you soon.</p>`;
+            document.getElementById('name').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('message').value = '';
+        }
+    </script>
+</body>
+</html>

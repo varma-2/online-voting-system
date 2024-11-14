@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voter Registration Status</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            padding: 20px;
+        }
+        .status-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+            text-align: center;
+        }
+        input {
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #status-result p {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="status-container">
+        <h2>Check Voter Registration Status</h2>
+        <input type="text" id="voter-id" placeholder="Enter Voter ID">
+        <button onclick="checkVoterStatus()">Check Status</button>
+        <div id="status-result" style="margin-top: 20px;"></div>
+    </div>
+
+    <script>
+        const validVoterIds = ['ABC123', 'XYZ789', 'DEF456']; // Sample valid voter IDs (replace with actual)
+
+        function checkVoterStatus() {
+            const voterId = document.getElementById('voter-id').value;
+            const statusResult = document.getElementById('status-result');
+
+            if (!voterId) {
+                alert('Please enter your Voter ID');
+                return;
+            }
+
+            // Simulate API check by comparing with the validVoterIds array
+            if (validVoterIds.includes(voterId)) {
+                statusResult.innerHTML = `<p>Voter ID: <strong>${voterId}</strong> is registered!</p>`;
+            } else {
+                statusResult.innerHTML = `<p style="color: red;">Invalid Voter ID. Please check and try again.</p>`;
+            }
+        }
+    </script>
+</body>
+</html>

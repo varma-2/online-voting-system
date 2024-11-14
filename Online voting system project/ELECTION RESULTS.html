@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Election Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            padding: 20px;
+        }
+        .results-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+        h2 {
+            text-align: center;
+        }
+        .result-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .result-list li {
+            padding: 10px;
+            margin: 10px 0;
+            background: #e8e8e8;
+            border-radius: 4px;
+        }
+        .chart-container {
+            width: 100%;
+            margin-top: 30px;
+        }
+        canvas {
+            max-width: 100%;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+</head>
+<body>
+    <div class="results-container">
+        <h2>Election Results</h2>
+        <ul class="result-list" id="result-list">
+            <!-- List of election results will be populated here dynamically -->
+        </ul>
+
+        <!-- Bar Chart to show vote counts -->
+        <div class="chart-container">
+            <canvas id="barChart"></canvas>
+        </div>
+
+        <!-- Pie Chart to show percentage of total votes -->
+        <div class="chart-container">
+            <canvas id="pieChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        function fetchResults() {
+            // Retrieve votes from local storage
+            const votes = JSON.parse(localStorage.getItem('votes')) || { 'Party A': 0, 'Party B': 0, 'Party C': 0 };
+
+            const resultList = document.getElementById('result-list');
+            resultList.innerHTML = ''; // Clear previous list
+            let candidateNames = [];
+            let counts = [];
+            let totalVotes = 0;
+
+            // Populate the results based on current vote counts
+            for (const [candidate, voteCount] of Object.entries(votes)) {
+                candidateNames.push(candidate);
+                counts.push(voteCount);
+                totalVotes += voteCount;
+                let listItem = `<li>${candidate} - ${voteCount} votes</li>`;
+                resultList.innerHTML += listItem;
+            }
+
+            // Update charts with the new data
+            updateBarChart(candidateNames, counts);
+            updatePieChart(candidateNames, counts, totalVotes);
+        }
+
+        // Function to update the bar chart
+        function updateBarChart(labels, data) {
+            const ctx = document.getElementById('barChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Votes',
+                        data: data,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Function to update the pie chart
+        function updatePieChart(labels, data, totalVotes) {
+            const ctx = document.getElementById('pieChart').getContext('2d');
+            const percentageData = data.map(votes => totalVotes > 0 ? ((votes / totalVotes) * 100).toFixed(2) : 0);
+
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: percentageData,
+                        backgroundColor: ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(75, 192, 192, 0.6)']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(tooltipItem) {
+                                    return labels[tooltipItem.dataIndex] + ': ' + percentageData[tooltipItem.dataIndex] + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Fetch results when page loads
+        window.onload = fetchResults;
+    </script>
+</body>
+</html>

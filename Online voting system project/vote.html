@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote for a Party</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            padding: 20px;
+        }
+        .vote-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        h2 {
+            text-align: center;
+        }
+        .party-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .party-list li {
+            padding: 10px;
+            margin: 10px 0;
+            background: #e8e8e8;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .vote-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .vote-button:hover {
+            background-color: #0056b3;
+        }
+        .vote-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .result-message {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="vote-container">
+        <h2>Select a Party to Vote For</h2>
+        <ul class="party-list" id="party-list">
+            <li>
+                Party A
+                <button class="vote-button" onclick="vote('Party A', this)">Vote</button>
+            </li>
+            <li>
+                Party B
+                <button class="vote-button" onclick="vote('Party B', this)">Vote</button>
+            </li>
+            <li>
+                Party C
+                <button class="vote-button" onclick="vote('Party C', this)">Vote</button>
+            </li>
+        </ul>
+        <div id="result-message" class="result-message"></div>
+    </div>
+
+    <script>
+        // Simulated logged-in username (this should normally come from your login process)
+        const loggedInUser = localStorage.getItem('loggedInUser');
+
+        // Function to check if the user has already voted
+        function hasUserVoted(username) {
+            return localStorage.getItem(`${username}_hasVoted`) === 'true';
+        }
+
+        // Function to update local storage with the votes
+        function updateVotes(party) {
+            let votes = JSON.parse(localStorage.getItem('votes')) || { 'Party A': 0, 'Party B': 0, 'Party C': 0 };
+            votes[party] += 1; // Increment the vote for the selected party
+            localStorage.setItem('votes', JSON.stringify(votes)); // Save updated votes
+        }
+
+        // Vote function
+        function vote(party, button) {
+            if (!loggedInUser) {
+                document.getElementById('result-message').innerHTML = "You are not logged in.";
+                return; // Prevent voting if not logged in
+            }
+
+            // Check if the logged-in user has already voted
+            if (hasUserVoted(loggedInUser)) {
+                document.getElementById('result-message').innerHTML = "You have already voted!";
+                return; // Prevent voting again if already voted
+            }
+
+            // Update the votes in local storage
+            updateVotes(party);
+            localStorage.setItem(`${loggedInUser}_hasVoted`, 'true'); // Mark that the user has voted
+
+            // Provide feedback to the user
+            const messageDiv = document.getElementById('result-message');
+            messageDiv.innerHTML = `You have successfully voted for <strong>${party}</strong>!`;
+
+            // Disable all buttons after voting
+            const buttons = document.querySelectorAll('.vote-button');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+            });
+            button.disabled = false; // Keep the clicked button active
+        }
+
+        // Redirect to login page if not logged in
+        if (!loggedInUser) {
+            window.location.href = 'login.html'; // Redirect to login if not logged in
+        }
+    </script>
+</body>
+</html>
+

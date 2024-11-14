@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Elections</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            padding: 20px;
+        }
+        .election-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+        }
+        h2 {
+            text-align: center;
+        }
+        .election-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .election-list li {
+            padding: 10px;
+            margin: 10px 0;
+            background: #e8e8e8;
+            border-radius: 4px;
+            position: relative; /* Position relative for the absolute details */
+        }
+        .election-list li button {
+            float: right;
+        }
+        .details {
+            display: none; /* Hide details by default */
+            background: #d0f0c0;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="election-container">
+        <h2>Available Elections</h2>
+        <ul class="election-list">
+            <li>
+                Lok Sabha Elections - 2024 
+                <button onclick="showDetails('lokSabha')">View Details</button>
+                <div class="details" id="lokSabha">
+                    <strong>Date:</strong> April 10, 2024<br>
+                    <strong>Description:</strong> The Lok Sabha elections will be held to elect members to the lower house of the Parliament of India. 
+                    This election is crucial for the formation of the next government.
+                </div>
+            </li>
+            <li>
+                Rajya Sabha Elections - 2024 
+                <button onclick="showDetails('rajyaSabha')">View Details</button>
+                <div class="details" id="rajyaSabha">
+                    <strong>Date:</strong> May 15, 2024<br>
+                    <strong>Description:</strong> The Rajya Sabha elections will be held to elect members to the upper house of the Parliament of India.
+                    This election involves indirect voting by the elected members of the Legislative Assembly.
+                </div>
+            </li>
+            <li>
+                State Election - 2024 
+                <button onclick="showDetails('stateElection')">View Details</button>
+                <div class="details" id="stateElection">
+                    <strong>Date:</strong> June 5, 2024<br>
+                    <strong>Description:</strong> The state elections will be conducted to elect members of the state legislative assembly. 
+                    This election is vital for the state's governance and representation.
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        function showDetails(electionId) {
+            // Hide all details first
+            const details = document.querySelectorAll('.details');
+            details.forEach(detail => {
+                detail.style.display = 'none';
+            });
+
+            // Show the selected election details
+            const selectedDetails = document.getElementById(electionId);
+            selectedDetails.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
+
+

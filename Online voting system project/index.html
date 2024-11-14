@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Voting System</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            display: flex;
+            background-color: white;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .left-side {
+            background-color: #002366;
+            color: white;
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .left-side img {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+
+        .left-side h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .left-side p {
+            font-size: 16px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .right-side {
+            width: 50%;
+            padding: 40px;
+        }
+
+        .right-side h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .right-side label {
+            font-weight: bold;
+            display: block;
+            margin-top: 20px;
+        }
+
+        .right-side input[type="text"], .right-side input[type="password"], .right-side input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .right-side input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            margin-top: 30px;
+            cursor: pointer;
+        }
+
+        .right-side input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .functional-links {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .functional-links a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .functional-links a:hover {
+            text-decoration: underline;
+        }
+
+        .team-members {
+            font-size: 12px;
+            text-align: center;
+            color: #666;
+            margin-top: 20px;
+        }
+
+        .otp-container {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .extra-options {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .extra-options a {
+            margin: 0 10px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .extra-options a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <script>
+        // Valid credentials (username, password)
+        const validCredentials = [
+            { username: "user@example.com", password: "password123" },
+            { username: "user2@example.com", password: "password456" },
+            { username: "user3@example.com", password: "password789" },
+            { username: "user4@example.com", password: "password101" },
+            { username: "user5@example.com", password: "password890" },
+            { username: "user6@example.com", password: "password102" },
+            { username: "user7@example.com", password: "password108" }
+        ];
+
+        // Valid captcha and OTPs
+        const validCaptcha = "B4T9S";
+        const validOTPs = ["1467", "2356", "9592"];
+        let loggedInUser = null; // To keep track of the logged-in user
+
+        function validateLogin(event) {
+            event.preventDefault(); // Prevent form submission
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const captcha = document.getElementById("captcha").value;
+
+            // Check if the credentials are valid
+            const user = validCredentials.find(cred => 
+                cred.username === username && cred.password === password
+            );
+
+            if (user && captcha === validCaptcha) {
+                loggedInUser = user.username; // Set logged-in user
+                // Show OTP input after successful validation
+                document.getElementById("otpContainer").style.display = "block";
+            } else {
+                alert("Invalid credentials or captcha! Please try again.");
+            }
+        }
+
+        function validateOTP(event) {
+            event.preventDefault(); // Prevent form submission
+            const otp = document.getElementById("otp").value;
+
+            if (validOTPs.includes(otp)) {
+                // Store logged-in user in localStorage
+                localStorage.setItem('loggedInUser', loggedInUser);
+                // Redirect to the new page after successful OTP verification
+                window.location.href = "dashboard.html"; // Change this to your actual page
+            } else {
+                alert("Invalid OTP! Please try again.");
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Left Side -->
+        <div class="left-side">
+            <img src="online voting.avif" alt="Logo">
+            <h1>Online Voting System</h1>
+            <p>Secure and efficient voting for everyone.</p>
+        </div>
+
+        <!-- Right Side (Login Form) -->
+        <div class="right-side">
+            <h2>Login</h2>
+
+            <!-- Login Form -->
+            <form onsubmit="validateLogin(event)">
+                <label for="username">Registered Mobile No./Email ID/EPIC No.:</label>
+                <input type="text" id="username" name="username" placeholder="Enter registered Mobile No./Email ID/EPIC No." required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter Password" required>
+
+                <!-- Captcha Placeholder -->
+                <label for="captcha">Captcha:</label>
+                <img src="Screenshot 2024-09-30 185958.png" alt="Captcha Image">
+                <input type="text" id="captcha" name="captcha" placeholder="Enter Captcha" required>
+
+                <input type="submit" value="Request OTP">
+            </form>
+
+            <!-- OTP Input -->
+            <div class="otp-container" id="otpContainer">
+                <label for="otp">Enter OTP:</label>
+                <input type="text" id="otp" name="otp" placeholder="Enter OTP" required>
+                <input type="submit" value="Verify OTP" onclick="validateOTP(event)">
+            </div>
+
+            <!-- Extra Options for Forgot Password and Register -->
+            <div class="extra-options">
+                <a href="forgetpassword.html" target="_blank">Forgot Password?</a>
+                <a href="registration.html" target="_blank">Register</a>
+                <a href="contact-support.html" target="_blank">Contact Support</a>
+            </div>
+
+            <!-- Functional Links (hidden for now, you can enable based on user roles) -->
+            <div class="functional-links" style="display: none;">
+                <a href="Available-elections.html" target="_blank">Available Elections</a>
+                <a href="voter-registration-status.html" target="_blank">Voter Registration Status</a>
+                <a href="ELECTION RESULTS.html" target="_blank">Election Results</a>
+            </div>
+
+            <!-- Team Members -->
+            <div class="team-members">
+                <strong>Team Members:</strong><br>
+                M.L.N Varma - 22BCE9592, Shaik Abdul Wahab - 22BCE9627,<br>
+                Sai Bhavana - 22BCE9604, Gangula Sri Chaitanya - 22BCE9521,<br>
+                K.Sreekanth - 22BCE7309
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
